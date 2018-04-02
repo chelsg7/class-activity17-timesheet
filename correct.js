@@ -37,3 +37,11 @@ $("#add-employee-btn").on("click", function(event) {
   })
 });
 
+dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+
+  // Change the HTML to reflect
+  $("#employee-name-input").text(snapshot.val().name);
+  $("#role-input").text(snapshot.val().email);
+  $("#start-input").text(snapshot.val().age);
+  $("#rate-input").text(snapshot.val().comment);
+});
