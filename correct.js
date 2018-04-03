@@ -1,4 +1,4 @@
-$(document).on("ready", function(){
+console.log("hello");
 
 // Initialize Firebase
 var config = {
@@ -31,25 +31,22 @@ $("#add-employee-btn").on("click", function(event) {
   $("#start-input").val("");
   $("#rate-input").val("");
 
-  // Add each train's data into the table
-  $("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +
-  empStart + "</td><td>" + "null" + "</td><td>" + empRate + "</td><td>" + "null" + "</td></tr>");
-
   database.ref().push({
     empName: empName,
     empRole: empRole,
-    empStart: firebase.database.ServerValue.TIMESTAMP,
+    empStart: empStart,
     empRate: empRate
   })
 });
 
-database.ref().orderByChild("empStart").limitToLast(1).on("child_added", function(snapshot) {
+database.ref().on("child_added", function(snapshot) {
 
   // Change the HTML to reflect
-  $("#employee-name-input").text(snapshot.val().empName);
-  $("#role-input").text(snapshot.val().empRole);
-  $("#start-input").text(snapshot.val().empStart);
-  $("#rate-input").text(snapshot.val().empRate);
-});
+  var empName = snapshot.val().empName;
+  var empRole = snapshot.val().empRole;
+  var empStart = snapshot.val().empStart;
+  var empRate = snapshot.val().empRate;
 
+  $("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +
+  empStart + "</td><td>" + "null" + "</td><td>" + empRate + "</td><td>" + "null" + "</td></tr>");
 });
