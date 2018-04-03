@@ -1,3 +1,5 @@
+$(document).on("ready", function(){
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyDniYEuYR-g34LMwfqFAPvH8lpHLLvd9FE",
@@ -7,7 +9,10 @@ var config = {
   storageBucket: "",
   messagingSenderId: "708048646607"
 };
+
 firebase.initializeApp(config);
+
+database = firebase.database();
 
 //Button for adding Employees
 $("#add-employee-btn").on("click", function(event) {
@@ -18,6 +23,7 @@ $("#add-employee-btn").on("click", function(event) {
   var empRole = $("#role-input").val().trim();
   var empStart = moment($("#start-input").val().trim(), "DD/MM/YY").format("X");
   var empRate = $("#rate-input").val().trim();
+
 
   // Clears all of the text-boxes
   $("#employee-name-input").val("");
@@ -37,11 +43,13 @@ $("#add-employee-btn").on("click", function(event) {
   })
 });
 
-dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+database.ref().orderByChild("empStart").limitToLast(1).on("child_added", function(snapshot) {
 
   // Change the HTML to reflect
-  $("#employee-name-input").text(snapshot.val().name);
-  $("#role-input").text(snapshot.val().email);
-  $("#start-input").text(snapshot.val().age);
-  $("#rate-input").text(snapshot.val().comment);
+  $("#employee-name-input").text(snapshot.val().empName);
+  $("#role-input").text(snapshot.val().empRole);
+  $("#start-input").text(snapshot.val().empStart);
+  $("#rate-input").text(snapshot.val().empRate);
+});
+
 });
